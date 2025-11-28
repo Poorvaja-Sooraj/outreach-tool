@@ -13,8 +13,7 @@ app.use('/auth', require('./routes/auth'));
 app.use('/agents', require('./routes/agents'));
 app.use('/upload', require('./routes/upload'));
 
-// Export app for serverless wrapper
-module.exports = app;
+
 
 // If running locally (node server.js), connect DB and listen
 if (require.main === module) {
@@ -30,3 +29,6 @@ if (require.main === module) {
     }
   })();
 }
+
+// Export app for serverless wrapper
+module.exports = app;
