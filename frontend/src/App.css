@@ -1,0 +1,170 @@
+/* src/App.css — full replacement to reliably center pages and layout */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root{
+  --bg: #f7fafc;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --accent: #0f766e;
+  --border: #e6edf0;
+  --shadow: 0 6px 18px rgba(8,15,22,0.06);
+  --radius: 12px;
+}
+
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #0f172a;
+  /* center the main app container horizontally */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ---------- App container (centered) ---------- */
+/* keep container centered, with a fixed max width */
+.app-container {
+  width: 100%;
+  max-width: 1100px;   /* change this smaller/larger to control overall width */
+  margin: 36px auto;   /* vertical spacing and auto horizontal centering */
+  padding: 18px;
+}
+
+/* ---------- Header ---------- */
+.header {
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  width: 100%;
+}
+.header h2 {
+  margin:0;
+  font-size: 24px;
+  font-weight:700;
+  text-align: left;
+}
+.header .logout-btn {
+  background:#0b1220;
+  color:#fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* ---------- Layout: left controls + right content ---------- */
+/* this grid lives inside .app-container and is centered by the parent */
+.layout {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 320px 1fr;   /* left fixed, right flexible */
+  gap: 28px;
+  align-items: start;
+  justify-items: stretch;
+}
+
+/* control column */
+.control-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  width: 100%;
+}
+
+/* small elements in controls */
+.control-card h3 { margin-top: 0; font-size: 18px; }
+.control-card input, .control-card button, .control-card select, .control-card textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #d6dce0;
+  font-size: 14px;
+}
+
+/* ---------- Agents grid (right column) ---------- */
+/* grid fills the right column and centers cards into columns */
+.agents-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  align-items: start;
+}
+
+/* ---------- Agent card ---------- */
+.agent-card {
+  background: linear-gradient(180deg, var(--card), #fcffff);
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.agent-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom: 8px;
+}
+.agent-name { font-weight:600; font-size: 16px; }
+.agent-email { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* details summary */
+details summary {
+  margin-top: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+details[open] summary { color: var(--accent); }
+
+/* customer list */
+.cust-list { margin:8px 0 0 14px; padding-left: 0; font-size: 14px; color: #0b1220; }
+.cust-list li { margin:6px 0; line-height:1.4; }
+
+/* meta row (only shown if content exists) */
+.meta { font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+/* count badge */
+.badge {
+  background: var(--accent);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight:600;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; gap: 18px; }
+  .control-card { order: 2; }
+  .agents-grid { grid-template-columns: 1fr; }
+}
+
+/* small utilities */
+.button {
+  display:inline-block;
+  background:#0b1220;
+  color:#fff;
+  padding:8px 12px;
+  border-radius:8px;
+  border:0;
+}
+.small-muted { color: var(--muted); font-size: 12px; }
