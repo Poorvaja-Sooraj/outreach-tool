@@ -1,29 +1,33 @@
 // backend/api/index.js
-const serverless = require('serverless-http');
-const app = require('../server');
-const mongoose = require('mongoose');
+// Minimal Vercel serverless wrapper for the Express app.
+// Ensures mongoose connects once and then forwards to the Express app.
 
-let connPromise = null;
+const serverless = require('serverless-http');
+const mongoose = require('mongoose');
+const app = require('../app'); // your Express app (exports the app)
+
+const handler = serverless(app);
+
+let isConnected = false;
 
 async function ensureDb() {
-  if (!connPromise) {
-    connPromise = mongoose.connect(process.env.MONGO_URI, {
-      // optional: useUnifiedTopology etc. Mongoose v7 handles defaults
-    }).catch(err => {
-      console.error('Mongo connect error', err);
-      throw err;
-    });
-  }
-  return connPromise;
+  if (isConnected || mongoose.connection.readyState === 1) return;
+  const uri = process.env.MONGO_URI;
+  if (!uri) throw new Error('MONGO_URI not set');
+  await mongoose.connect(uri);
+  isConnected = true;
+  console.log('Connected to MongoDB (serverless)');
 }
 
 module.exports = async (req, res) => {
   try {
     await ensureDb();
-    // Hand off to serverless wrapper
-    return serverless(app)(req, res);
-  } catch (e) {
-    console.error('Error in handler', e);
-    res.status(500).send('Server error');
+    // Directly call the serverless handler
+    return handler(req, res);
+  } catch (err) {
+    console.error('API wrapper error:', err && err.message ? err.message : err);
+    res.statusCode = 500;
+    res.setHeader('content-type', 'text/plain');
+    res.end('Internal Server Error');
   }
 };
