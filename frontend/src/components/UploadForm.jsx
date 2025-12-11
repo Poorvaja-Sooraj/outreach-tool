@@ -79,7 +79,7 @@ export default function UploadForm({ onUploaded }) {
         },
       });
 
-      setMsg('Uploaded: ' + JSON.stringify(res.data.counts));
+      setMsg('');
       setProgress(0);
       setFile(null);
       setPreviewRows([]);
