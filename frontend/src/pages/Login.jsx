@@ -6,8 +6,8 @@ import "../App.css";
 
 export default function Login() {
   const { login } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@company.com");
+  const [password, setPassword] = useState("Admin@123");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
